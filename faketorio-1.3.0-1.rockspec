@@ -1,16 +1,16 @@
 -- This file was automatically generated for the LuaDist project.
 
 package = "faketorio"
-version = "1.2.0-1"
+version = "1.3.0-1"
 -- LuaDist source
 source = {
-  tag = "1.2.0-1",
+  tag = "1.3.0-1",
   url = "git://github.com/LuaDist-testing/faketorio.git"
 }
 -- Original source
 -- source = {
 --     url = "git://github.com/JonasJurczok/Faketorio",
---     tag = "1.2.0",
+--     tag = "1.3.0",
 --     branch = "master"
 -- }
 description = {
@@ -31,7 +31,9 @@ dependencies = {
     "argparse >= 0.5.0",
     "luafilesystem >= 1.7.0",
     "teateatea >= 1.3",
-    "json-lua >= 0.1"
+    "json-lua >= 0.1",
+    "lua-zlib >= 1.2.0",
+    "luarocks >= 2.3.0"
 }
 build = {
     type = "builtin",
@@ -40,12 +42,14 @@ build = {
         ["faketorio.clean"] = "src/faketorio/clean.lua",
         ["faketorio.helper"] = "src/faketorio/helper.lua",
         ["faketorio.lib"] = "src/faketorio/lib.lua",
+        ["faketorio.package"] = "src/faketorio/package.lua",
         ["faketorio.runner"] = "src/faketorio/runner.lua",
         ["faketorio.test"] = "src/faketorio/test.lua",
         ["faketorio.ingame.core"] = "src/ingame/core.lua",
         ["faketorio.ingame.functions"] = "src/ingame/functions.lua",
         ["faketorio.ingame.logging"] = "src/ingame/logging.lua",
         ["faketorio.ingame.mocks"] = "src/ingame/mocks.lua",
+        ["faketorio.ingame.ui"] = "src/ingame/ui.lua",
     },
     install = {
         bin = {

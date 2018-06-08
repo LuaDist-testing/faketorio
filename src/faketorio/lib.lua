@@ -6,6 +6,7 @@ require("faketorio.helper")
 require("faketorio.clean")
 require("faketorio.build")
 require("faketorio.test")
+require("faketorio.package")
 
 function faketorio.execute(args)
     if (args.verbose) then
@@ -24,7 +25,7 @@ function faketorio.execute(args)
     end
 
     -- allways assemble and load the config
-    faketorio.load_config()
+    faketorio.load_config(args.config)
     faketorio.build()
 
     if (args.build) then
@@ -42,17 +43,17 @@ function faketorio.execute(args)
     elseif (args.run) then
         faketorio.create_map_and_run_factorio(args.path)
     elseif (args.copy) then
-        faketorio.print_message("Copying mod to Factorio mod folder...")
 
         faketorio.prepare_tests()
 
+        faketorio.print_message("Copying mod to Factorio mod folder...")
         faketorio.copy_mod_to_factorio_mod_dir()
 
         faketorio.print_message("Copying finished.")
     elseif (args.package) then
         -- execute build
-        -- TODO: implement packaging the mod (2)
         faketorio.print_message("Packaging mod")
+        faketorio.package()
     end
 end
 

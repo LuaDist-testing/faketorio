@@ -19,11 +19,6 @@ The problem with unit testing is that it only gets you so far. The most interest
 Enter Faketorio. The goal is to provide a standard system for running your mod against your local Factorio installation, execute tests INSIDE
 Factorio and then package your mod for release.
 
-## TODO
-A lot of things are still incomplete. Namely
-* Actually zipping the mod for upload. Assembling a folder works already, zipping is still missing
-* Running the tests
-
 ## Installation
 
 If you use [LuaRocks](https://luarocks.org) for your lua modules it is as easy as running `luarocks install faketorio`.
@@ -62,18 +57,19 @@ Faketorio assumes the following structure for your mod files:
 The Factorio specific files (`control.lua`, `data.lua`, `settings.lua`, ...) all go into the source folder without any additional subfolders.
 
 #### .faketorio config file
-Faketorio requires a config file in your home folder (`/home/<USER>/` on Linux systems, TODO: test windows systems).
+Faketorio requires a config file to run. You can specify the location with the `-c` option. If no config path
+is provided faketorio will search for a file named `.faketorio` in the current folder.
 This file has to have three values configured.
 
 ```properties
 factorio_mod_path = /home/jjurczok/.factorio/mods
 factorio_run_path = /home/jjurczok/.local/share/Steam/steamapps/common/Factorio/bin/x64/factorio
 
+# windows based example
+factorio_run_path = D:\Spiele\Factorio\bin\x64\factorio.exe
+
 faketorio_path = /usr/share/lua/5.2/faketorio
 ```
-
-TODO: add windows based examples
-
 `factorio_mod_path` describes the folder where all your mods are. On my machine this is in the home folder, on windows it will be somewhere else
 `factorio_run_path` is the path to the executable (Factorio.exe on windows)
 
@@ -98,8 +94,8 @@ If you already have Factorio running this command will replace the mod in the Fa
 With this you can just click `restart map` in the game and have the newest version of the mod loaded. ATTENTION: changing locales/grafics requires a restart of the game
 as these resources are only loaded on game startup.
 * `faketorio package` \
-This command creates a properly named folder in the target folder that is named according to the Factorio mod naming conventions (ModName_Version). The information
-for this are extracted from your `info.json`. This mod can then be zipped and uploaded to the mod portal (TODO: Zip is done for you).
+This command creates a properly named zipfile in the target folder that is named according to the Factorio mod naming conventions (ModName_Version). The information
+for this are extracted from your `info.json`. This file can then be uploaded to the Factorio mod portal.
 * `faketorio run` \
 This command does roughly the same as the `build` command. Except that it also copies the folder to your factorio mod folder and then starts Factorio.
 It will order Factorio to create a new map, load your mod and then run Factorio with that newly generated map. This gives you a clean game to test your mod.
@@ -118,6 +114,16 @@ The tests are inspired by [busted](https://github.com/Olivine-Labs/busted) and u
 ```lua
 -- in mod_feature.lua
 feature("My first feature", function()
+    
+    before_scenario(function()
+        -- will be called before every scenario in this feature
+        -- this is intended for setting up preconditions for this specific feature
+    end)
+
+    after_scenario(function()
+        -- will be called after every scenario in this feature
+        -- this is intended to bring the mod back into a state as it would be expected from the next test
+    end)
     
     scenario("The first scenario", function()
         faketorio.click("todo_maximize_button")
@@ -142,6 +148,11 @@ Faketorio will generate a new map, copy your mod and the tests and starts Factor
 
 As soon as you are in game you can open the [debug console](https://wiki.factorio.com/Console) and enter
 `/faketorio`. Simply run the command and all your tests will be executed.
+
+You will see a dialog popping up in the middle of the screen. The top bar indicates progress on feature level,
+the lower bar indicates progress on scenario level for the currently running feature.
+
+If there are test errors they will be documented in the textbox below the progress bar after the testrun finishes.
 
 #### Marking tests as success/failure
 
