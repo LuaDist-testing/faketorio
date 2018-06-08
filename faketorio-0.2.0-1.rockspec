@@ -1,16 +1,16 @@
 -- This file was automatically generated for the LuaDist project.
 
 package = "faketorio"
-version = "0.1.3-1"
+version = "0.2.0-1"
 -- LuaDist source
 source = {
-  tag = "0.1.3-1",
+  tag = "0.2.0-1",
   url = "git://github.com/LuaDist-testing/faketorio.git"
 }
 -- Original source
 -- source = {
 --    url = "git://github.com/JonasJurczok/Faketorio",
---    tag = "0.1.3",
+--    tag = "0.2.0",
 --    branch = "master"
 -- }
 description = {
@@ -33,5 +33,6 @@ build = {
    type = "builtin",
    modules = {
       faketorio = "src/faketorio.lua",
+      faketorio_busted = "src/faketorio_busted.lua"
    }
 }
