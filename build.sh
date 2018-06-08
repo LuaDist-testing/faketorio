@@ -2,10 +2,12 @@
 
 set -e
 
-luacheck .
-busted
+rm -f luacov.*.out
 
-echo "Checking where we should deply or not. Tag is ${TRAVIS_TAG}, branch is ${TRAVIS_BRANCH} and pull request is ${TRAVIS_PULL_REQUEST}".
+luacheck src spec
+busted -c
+
+echo "Checking where we should deploy or not. Tag is ${TRAVIS_TAG}, branch is ${TRAVIS_BRANCH} and pull request is ${TRAVIS_PULL_REQUEST}".
 if [ -n "${TRAVIS_TAG}" ] ; then
 	# we have a tag. Lets deploy
 	echo "Deploying version ${TRAVIS_TAG}"

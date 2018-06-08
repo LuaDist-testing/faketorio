@@ -1,10 +1,18 @@
-package = "Faketorio"
-version = "VERSION-1"
+-- This file was automatically generated for the LuaDist project.
+
+package = "faketorio"
+version = "1.0.0-1"
+-- LuaDist source
 source = {
-    url = "git://github.com/JonasJurczok/Faketorio",
-    tag = "VERSION",
-    branch = "master"
+  tag = "1.0.0-1",
+  url = "git://github.com/LuaDist-testing/faketorio.git"
 }
+-- Original source
+-- source = {
+--     url = "git://github.com/JonasJurczok/Faketorio",
+--     tag = "1.0.0",
+--     branch = "master"
+-- }
 description = {
     summary = "Support library for Factorio mod unit testing.",
     detailed = [[
