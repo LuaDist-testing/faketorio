@@ -1,16 +1,16 @@
 -- This file was automatically generated for the LuaDist project.
 
 package = "faketorio"
-version = "1.1.0-1"
+version = "1.2.0-1"
 -- LuaDist source
 source = {
-  tag = "1.1.0-1",
+  tag = "1.2.0-1",
   url = "git://github.com/LuaDist-testing/faketorio.git"
 }
 -- Original source
 -- source = {
 --     url = "git://github.com/JonasJurczok/Faketorio",
---     tag = "1.1.0",
+--     tag = "1.2.0",
 --     branch = "master"
 -- }
 description = {
@@ -44,6 +44,8 @@ build = {
         ["faketorio.test"] = "src/faketorio/test.lua",
         ["faketorio.ingame.core"] = "src/ingame/core.lua",
         ["faketorio.ingame.functions"] = "src/ingame/functions.lua",
+        ["faketorio.ingame.logging"] = "src/ingame/logging.lua",
+        ["faketorio.ingame.mocks"] = "src/ingame/mocks.lua",
     },
     install = {
         bin = {
