@@ -2,12 +2,12 @@ describe("Test feature/scenario registration #ingame", function()
     lazy_setup(function()
         require("ingame.functions")
         require("faketorio.lib")
-
+        stub(faketorio, "print")
     end)
 
     lazy_teardown(function()
-        os.remove("src/control.lua")
         faketorio.clean()
+        faketorio.print:revert()
     end)
 
     it("Should register features correctly", function()
@@ -54,4 +54,108 @@ describe("Test feature/scenario registration #ingame", function()
         assert.are.equals(6, scount)
     end)
 
+    it("should execute features correctly.", function()
+
+        faketorio.testcount = 0
+
+        feature("F1", function()
+            scenario("S1", function()
+                faketorio.testcount = faketorio.testcount + 1
+            end)
+
+            scenario("S2", function()
+                faketorio.testcount = faketorio.testcount + 1
+            end)
+        end)
+
+        feature("F2", function()
+            scenario("S1", function()
+                faketorio.testcount = faketorio.testcount + 1
+            end)
+
+            scenario("S2", function()
+                faketorio.testcount = faketorio.testcount + 1
+            end)
+        end)
+
+        faketorio.run()
+
+        assert.are.equals(4, faketorio.testcount)
+    end)
+
+    it("should collect failures correctly.", function()
+        feature("F1", function()
+            scenario("S1", function()
+                -- success
+            end)
+
+        end)
+
+        feature("F2", function()
+            scenario("S1", function()
+                error("Failure")
+            end)
+
+        end)
+
+        faketorio.run()
+
+        assert.are.equals("spec/ingame_spec.lua:96: Failure", faketorio.errors["F2"]["S1"])
+    end)
+
+    it("should enable clicking on things", function()
+        _G.defines = {
+            mouse_button_type = {
+                left = 1
+            },
+            events = {
+                on_gui_click = 2
+            }
+        }
+        _G.game = {}
+        game.players = {}
+        game.players[1] = {
+            name = "asd",
+            gui = {
+                top = {
+                    children = {
+                        ["someOtherId"] = {
+                            type = "button",
+                            name = "someOtherId",
+                            children = {}
+                        }
+                    }
+                },
+                left = {
+                    children = {
+                        ["someParent"] = {
+                            name = "someParent",
+                            children = {
+                                {
+                                    type = "button",
+                                    name = "testId",
+                                    children = {}
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        _G.script = {}
+
+        function script.raise_event(id, event)
+            assert.are.equals(defines.events.on_gui_click, id)
+
+            assert.are.equals("testId", event.element.name)
+            assert.are.equals("button", event.element.type)
+            assert.are.equals(1, event.player_index)
+            assert.are.equals(defines.mouse_button_type.left, event.button)
+            assert.are.equals(false, event.alt)
+            assert.are.equals(false, event.control)
+            assert.are.equals(false, event.shift)
+        end
+
+        faketorio.click("testId")
+    end)
 end)
